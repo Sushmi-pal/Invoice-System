@@ -43,6 +43,11 @@
   box-sizing: border-box;
 }
 
+.navbar{
+    background-color:white;
+    width: 100%;
+}
+
 html {
   font-family: sans-serif;
   line-height: 1.15;
@@ -52,6 +57,13 @@ html {
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
+}
+
+.nav-link {
+    color: black !important;
+    font-weight: 600;
+    float: right;
+    text-align: right;
 }
 
 body {
@@ -10002,3 +10014,4 @@ h3 {
     border-color: #dee2e6;
   }
 }
+
