@@ -1,14 +1,30 @@
-@extends('User.UserLayout')
+@extends('layouts.app')
 @can('retrieve_user')
-@section('CssOrJs')
-
+@section('CssSection')
+    <link href="{{ asset('css/UserLayout.css') }}" rel="stylesheet">
+<style>
+    .active{
+        font-size: 25px !important;
+        color: red !important;
+    }
+</style>
 @endsection
+@section('title') User @endsection
 @section('body')
     @if (session('status'))
         <div class="alert alert-success">{{session('status')}}</div>
     @endif
     <a href="{{route('user.create')}}">Add New User</a>
-    <form class="d-flex" action="{{route('user.index')}}" method="GET">
+    <nav aria-label="...">
+        <ul class="pagination">
+            @for ($i=1; $i<=$total; $i++)
+                <li class="page-item"><a class="page-link" id="{{$i}}" onclick="make_active({{$i}})" href="{{request()->fullUrlWithQuery(['page'=>$i])}}">{{$i}}</a></li>
+            @endfor
+
+        </ul>
+    </nav>
+
+    <form class="d-flex" action="{{route('Users')}}" method="GET">
         <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
@@ -48,10 +64,10 @@
         </thead>
         <tbody id="CompanyTable">
 
-        @if (isset($search))
+        @if (isset($result))
             <?php $index = 1?>
             {{--        @dd($search->name);--}}
-            @foreach($search as $user)
+            @foreach($result as $user)
 
                 <tr>
                     <td>{{$index}}</td>

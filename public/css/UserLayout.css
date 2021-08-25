@@ -1,27 +1,33 @@
-nav li{
+nav li {
     display: block;
     float: right;
 
 }
 
 
-.navbar{
+.navbar {
     background-color: white;
     width: 100%;
 }
 
-.nav-link{
-    color:black !important;
+.nav-link {
+    color: black !important;
     font-weight: 600;
     float: right;
     text-align: right;
 }
 
-a:hover{
+a:hover {
     font-size: 30px;
 }
 
-a{
-    color:black;
+a {
+    color: black;
 }
+
+.active {
+    font-size: 25px !important;
+    color: red !important;
+}
+
 

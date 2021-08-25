@@ -12,7 +12,7 @@
             @if (Auth::user())
                 <ul>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('user.index')}}">USERS</a>
+                        <a class="nav-link" href="{{route('Users')}}">USERS</a>
                     </li>
                 </ul>
             </ul>

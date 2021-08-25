@@ -20,6 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/search', [\App\Http\Controllers\User\UserController::class, 'GetUser'])->name('search');
 Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+Route::get('/Users', [App\Http\Controllers\User\UserController::class, 'getUsers'])->name('Users');
 Route::resource('user',\App\Http\Controllers\User\UserController::class);
+Route::get('/search', [\App\Http\Controllers\User\UserController::class, 'GetUser'])->name('search');

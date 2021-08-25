@@ -125,5 +125,32 @@ class UserService
 
     }
 
+    public function getUsers($params)
+    {
+
+        $search = '';
+        $where = [];
+        $orWhere = [];
+        if (isset($params['search'])) {
+            $search = $params['search'];
+            $where = [['name', 'like', "%{$search}%"]];
+            $orWhere = [['email', 'like', "%{$search}%"]];
+        }
+        $select = ['*'];
+
+        $orderBy = '';
+        $order = 1 ? isset($params['order']) and isset($params['sort']) : 0;
+        if ($order) {
+            $orderBy = [$params['order'], $params['sort']];
+        }
+        $skip = '';
+        $take = '10';
+
+        if (isset($params['page'])) {
+            $skip = ($params['page'] - 1) * $take;
+        }
+
+        return $this->userRepository->getUsers($select, $where, $orWhere, $orderBy, $skip, $take);
+    }
 
 }
