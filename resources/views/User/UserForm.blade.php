@@ -1,10 +1,11 @@
-@extends('User.UserLayout')
-@can('create_user')
+@extends('layouts.app')
+@canany(['create_user', 'update_user'])
 @section('CssSection')
+    <link href="{{ asset('css/UserLayout.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{asset('css/UserCreation.css')}}">
     <script type="text/javascript" src="{{asset('js/UserCreate.js')}}"></script>
 @endsection
-
+@section('title') User @endsection
 @section('body')
     <div class="testbox">
         @if (isset($user_id))
@@ -43,4 +44,4 @@
         @endif
     </div>
 @endsection
-@endcan
+@endcanany
