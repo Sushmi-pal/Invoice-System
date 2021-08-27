@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\helper\RolePermission;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
@@ -14,6 +15,8 @@ use Illuminate\Support\Str;
 use PHPUnit\Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 
 class UserController extends Controller
@@ -30,7 +33,7 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the users.
      *
      * @return \Illuminate\Http\Response
      */
@@ -47,39 +50,43 @@ class UserController extends Controller
 
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new user.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
         try {
-            return view('User.UserForm');
+            $roles = Role::all();
+            return view('User.UserForm', compact('roles'));
         } catch (\Exception $exception) {
             Log::error($exception);
         }
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created role in storage.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(UserRequest $req)
     {
-
         try {
+
             DB::beginTransaction();
-            $this->userService->store([
+            $user = $this->userService->store([
                 "name" => $req->name,
                 "email" => $req->email,
                 "password" => bcrypt($req->password)
             ]);
+
+            $roles = $req->roles;
+            foreach ($roles as $role) {
+                $user->assignRole($role);
+            }
             DB::commit();
-            return redirect()->route('user.index')->with('status', 'New User Created');
-
-
+            return redirect()->route('Users')->with('status', 'New User Created');
         } catch (\Exception $exception) {
             Log::error($exception);
         }
@@ -87,7 +94,7 @@ class UserController extends Controller
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified user.
      *
      * @param int $id
      * @return \Illuminate\Http\Response
@@ -98,7 +105,13 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
             $user_id = $this->userService->edit($id);
-            return view('User.UserForm', compact('user_id'));
+            $model_roles = DB::table('model_has_roles')->where('model_id', $id)->get();
+            $selected_roles = [];
+            $roles = Role::all();
+            foreach ($model_roles as $role) {
+                $selected_roles[] = $role->role_id;
+            }
+            return view('User.UserForm', compact('user_id', 'selected_roles', 'roles'));
             DB::commit();
         } catch (\Exception $exception) {
             Log::error($exception);
@@ -107,7 +120,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified user in storage.
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
@@ -116,15 +129,12 @@ class UserController extends Controller
      */
     public function update(UserRequest $req, $id)
     {
+
         try {
             DB::beginTransaction();
-            $this->userService->update([
-                "name" => $req->name,
-                "email" => $req->email,
-                "password" => bcrypt($req->password)
-            ], $id);
+            $this->userService->update($id, $req->all());
             DB::commit();
-            return redirect()->route('user.index')->with('status', 'User Details Updated');
+            return redirect()->route('Users')->with('status', 'User Details Updated');
         } catch (\Exception $exception) {
             Log::error($exception);
         }

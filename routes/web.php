@@ -23,4 +23,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 Route::get('/Users', [App\Http\Controllers\User\UserController::class, 'getUsers'])->name('Users');
 Route::resource('user',\App\Http\Controllers\User\UserController::class);
+Route::resource('role',\App\Http\Controllers\Role\RoleController::class);
 Route::get('/search', [\App\Http\Controllers\User\UserController::class, 'GetUser'])->name('search');

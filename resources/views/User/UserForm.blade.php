@@ -14,18 +14,27 @@
                 @csrf
                 @method('PUT')
                 <label id="icon" for="name"><i class="icon-user"></i></label>
-                <input type="text" name="name" id="name" placeholder="Name" required value="{{$user_id->name}}"/>
+                <input type="text" name="name" id="name" placeholder="Name" required value="{{$user_id->name}}"/><br>
                 <label id="icon" for="email"><i class="icon-envelope "></i></label>
-                <input type="text" name="email" id="email" placeholder="Email" required value="{{$user_id->email}}"/>
+                <input type="text" name="email" id="email" placeholder="Email" required value="{{$user_id->email}}"/><br>
                 <label id="icon" for="password"><i class="icon-shield"></i></label>
                 <input type="password" name="password" id="password" placeholder="Password" style="margin-top: 0;"
-                       required value="{{\Illuminate\Support\Facades\Auth::user()->password}}"/>
+                       required value="{{\Illuminate\Support\Facades\Auth::user()->password}}"/><br>
+                @foreach ($roles as $role)
+                    <input type="checkbox" name="roles[]" value="{{$role->id}}"
+                    @if(in_array($role->id, $selected_roles))
+                        {{"checked"}}
+                        @else
+                        {{""}}
+                        @endif> {{$role->name}} <br>
+                @endforeach
                 <button type="submit">Submit</button>
             </form>
         @else
             <h1>User Creation</h1>
             <form action="{{route('user.store')}}" method="post">
                 @csrf
+
                 <label id="icon" for="name"><i class="icon-user"></i></label>
                 <input type="text" name="name" id="name" placeholder="Name" value="{{@old('name')}}"/><br>
                 <span id="Spanname" class="error">@error('name'){{$message}}@enderror</span> <br>
@@ -39,6 +48,12 @@
                 <input id="password-confirm" type="password" placeholder="Confirm Password" name="password_confirmation"
                        autocomplete="new-password">
                 <span id="SpanConfirmpassword" class="error">@error('confirm_password'){{$message}}@enderror</span> <br><br>
+
+                @foreach ($roles as $role)
+                    <input type="checkbox" name="roles[]" value="{{$role->name}}"> {{$role->name}} <br>
+                @endforeach
+
+
                 <button type="submit">Submit</button>
             </form>
         @endif

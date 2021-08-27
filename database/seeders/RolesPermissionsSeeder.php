@@ -6,6 +6,7 @@ use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Seeder;
+use App\helper\RolePermission;
 
 class RolesPermissionsSeeder extends Seeder
 {
@@ -27,10 +28,11 @@ class RolesPermissionsSeeder extends Seeder
         Permission::create(['name' => 'update_post']);
         Permission::create(['name' => 'delete_post']);
         Permission::create(['name' => 'access_post']);
+        Permission::create(['name' => 'manage_role']);
 
         Role::create(['name' => 'admin'])->givePermissionTo(Permission::all());
-        Role::create(['name' => 'user'])->givePermissionTo(['access_user', 'create_user', 'access_post',
-            'create_post']);
+        Role::create(['name' => 'user'])->givePermissionTo(['access_user', 'create_user', 'access_post', 'create_post']);
+
 
 
     }

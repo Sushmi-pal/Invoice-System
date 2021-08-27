@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
@@ -46,7 +47,7 @@ class User extends Authenticatable
     ];
 
 //    public function users_roles(){
-//        return $this->belongsTo(models_has_roles, 'model_id', 'role_id');
+//        return $this->belongsTo(DB::table(models_has_roles), 'model_id', 'role_id');
 //    }
 //
 //    public function users_permissions(){
