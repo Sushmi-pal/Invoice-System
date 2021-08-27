@@ -2,6 +2,9 @@
 @can('manage_role')
 @section('title') User @endsection
 @section('body')
+    @if (session('error_msg'))
+        <div class="alert alert-success">{{session('msg')}}</div>
+    @endif
     @if(isset($selectedperm))
         <div class="right_col" role="main">
             <h1 class="mt-3">Edit Role  <a href="{{route('role.index')}}" class="btn btn-primary btn-sm"> <i class="fa fa-plus" aria-hidden="true"></i> View Roles</a></h1>
