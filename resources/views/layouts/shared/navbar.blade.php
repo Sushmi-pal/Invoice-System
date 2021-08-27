@@ -15,13 +15,18 @@
                         <a class="nav-link" href="{{route('Users')}}">USERS</a>
                     </li>
                 </ul>
-            </ul>
 
             <ul>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('role.index')}}">ROLES</a>
                 </li>
             </ul>
+
+                    <ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('audit')}}">AUDIT LOG</a>
+                        </li>
+                    </ul>
             </ul>
             @endif
 

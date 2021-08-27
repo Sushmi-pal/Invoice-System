@@ -23,6 +23,11 @@ class UserController extends Controller
 {
 
     /**
+     * @var UserService
+     */
+    protected $userService;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -45,6 +50,7 @@ class UserController extends Controller
             return view('User.UserRetrieve')->with('result', $result)->with('total', $total)->with('status', 'Search Results');
         } catch (\Exception $exception) {
             Log::error($exception);
+            return Redirect::back()->withErrors(['error_msg', $exception]);
         }
     }
 
@@ -61,6 +67,7 @@ class UserController extends Controller
             return view('User.UserForm', compact('roles'));
         } catch (\Exception $exception) {
             Log::error($exception);
+            return Redirect::back()->withErrors(['error_msg', $exception]);
         }
     }
 
@@ -89,6 +96,7 @@ class UserController extends Controller
             return redirect()->route('Users')->with('status', 'New User Created');
         } catch (\Exception $exception) {
             Log::error($exception);
+            return Redirect::back()->withErrors(['error_msg', $exception]);
         }
     }
 
@@ -115,6 +123,7 @@ class UserController extends Controller
             DB::commit();
         } catch (\Exception $exception) {
             Log::error($exception);
+            return Redirect::back()->withErrors(['error_msg', $exception]);
         }
 
     }
@@ -137,6 +146,7 @@ class UserController extends Controller
             return redirect()->route('Users')->with('status', 'User Details Updated');
         } catch (\Exception $exception) {
             Log::error($exception);
+            return Redirect::back()->withErrors(['error_msg', $exception]);
         }
 
     }
@@ -154,10 +164,10 @@ class UserController extends Controller
             DB::beginTransaction();
             $this->userService->destroy($id);
             DB::commit();
-            return redirect()->route('user.index');
+            return redirect()->route('Users');
         } catch (\Exception $exception) {
-
             Log::error($exception);
+            return Redirect::back()->withErrors(['error_msg', $exception]);
         }
     }
 }

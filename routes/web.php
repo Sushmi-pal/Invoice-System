@@ -25,3 +25,4 @@ Route::get('/Users', [App\Http\Controllers\User\UserController::class, 'getUsers
 Route::resource('user',\App\Http\Controllers\User\UserController::class);
 Route::resource('role',\App\Http\Controllers\Role\RoleController::class);
 Route::get('/search', [\App\Http\Controllers\User\UserController::class, 'GetUser'])->name('search');
+Route::get('/audit', [\App\Http\Controllers\Audit\AuditController::class, 'showAudit'])->name('audit');

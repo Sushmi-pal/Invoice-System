@@ -7,6 +7,9 @@
 @endsection
 @section('title') User @endsection
 @section('body')
+    @if (session('error_msg'))
+        <div class="alert alert-success">{{session('msg')}}</div>
+    @endif
     <div class="testbox">
         @if (isset($user_id))
             <h1>Edit User Details</h1>

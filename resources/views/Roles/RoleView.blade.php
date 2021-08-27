@@ -8,6 +8,9 @@
     @if (session('status'))
         <div class="alert alert-success">{{session('status')}}</div>
     @endif
+    @if (session('error_msg'))
+        <div class="alert alert-success">{{session('msg')}}</div>
+    @endif
     <a href="{{route('role.create')}}">Add New Role</a>
 
     <table class="table table-hover">

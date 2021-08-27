@@ -14,6 +14,9 @@
     @if (session('status'))
         <div class="alert alert-success">{{session('status')}}</div>
     @endif
+    @if (session('error_msg'))
+        <div class="alert alert-success">{{session('msg')}}</div>
+    @endif
     <a href="{{route('user.create')}}">Add New User</a>
     <nav aria-label="...">
         <ul class="pagination">
