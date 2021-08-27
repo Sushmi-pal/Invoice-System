@@ -16,6 +16,13 @@
                     </li>
                 </ul>
             </ul>
+
+            <ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('role.index')}}">ROLES</a>
+                </li>
+            </ul>
+            </ul>
             @endif
 
             <!-- Right Side Of Navbar -->

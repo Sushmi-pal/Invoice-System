@@ -4,9 +4,6 @@ namespace App\Repository\User;
 
 use App\Models\User;
 use App\Repository\Repository;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Request;
-use Spatie\Permission\Models\Role;
 
 /**
  * Class User Repository
@@ -64,7 +61,6 @@ class UserRepo extends Repository
         if ($take) {
             $data = $data->take($take);
         }
-
         return $data->get();
     }
 }
