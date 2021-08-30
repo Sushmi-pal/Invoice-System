@@ -42,7 +42,7 @@ class RoleController extends Controller
             return view('Roles.RoleView')->with('result', $roles)->with('status', 'Search Results');
         } catch (\Exception $exception) {
             Log::error($exception);
-            return Redirect::back()->withErrors(['error_msg', $exception]);
+            return redirect()->back()->with('error_msg', $exception);
         }
     }
 
@@ -58,7 +58,7 @@ class RoleController extends Controller
             return view('Roles.RoleForm', compact('permissions'));
         } catch (\Exception $exception) {
             Log::error($exception);
-            return Redirect::back()->withErrors(['error_msg', $exception]);
+            return redirect()->back()->with('error_msg', $exception);
         }
     }
 
@@ -88,7 +88,7 @@ class RoleController extends Controller
             }
         } catch (\Exception $exception) {
             Log::error($exception);
-            return Redirect::back()->withErrors(['error_msg', $exception]);
+            return redirect()->back()->with('error_msg', $exception);
         }
     }
 
@@ -116,7 +116,7 @@ class RoleController extends Controller
             }
         } catch (\Exception $exception) {
             Log::error($exception);
-            return Redirect::back()->withErrors(['error_msg', $exception]);
+            return redirect()->back()->with('error_msg', $exception);
         }
 
     }
@@ -151,7 +151,7 @@ class RoleController extends Controller
             }
         } catch (\Exception $exception) {
             Log::error($exception);
-            return Redirect::back()->withErrors(['error_msg', $exception]);
+            return redirect()->back()->with('error_msg', $exception);
         }
 
     }
@@ -171,7 +171,7 @@ class RoleController extends Controller
             return redirect()->route('role.index');
         } catch (\Exception $exception) {
             Log::error($exception);
-            return Redirect::back()->withErrors(['error_msg', $exception]);
+            return redirect()->back()->with('error_msg', $exception);
         }
     }
 }

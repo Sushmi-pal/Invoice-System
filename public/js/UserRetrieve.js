@@ -25,11 +25,19 @@ $('.column_sort').on('click', function () {
 
 })
 
-function make_active(i) {
-    localStorage.setItem("id", i)
-}
+// function make_active(i) {
+//     localStorage.setItem("id", i)
+// }
+//
+// const a = localStorage.getItem("id")
+// var id = document.getElementById(a)
+// id.style.color = 'red';
+// id.style.fontSize = "25px";
 
-const a = localStorage.getItem("id")
-var id = document.getElementById(a)
-id.style.color = 'red';
-id.style.fontSize = "25px";
+
+var queryString=window.location.search
+const urlParams = new URLSearchParams(queryString);
+var page=urlParams.get('page')
+var id=document.getElementById(page)
+id.classList.add('active')
+

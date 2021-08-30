@@ -2,6 +2,9 @@
 
 namespace App\Repository\User;
 
+use App\Models\Gender;
+use App\Models\Profile;
+use App\Models\Status;
 use App\Models\User;
 use App\Repository\Repository;
 
@@ -62,5 +65,19 @@ class UserRepo extends Repository
             $data = $data->take($take);
         }
         return $data->get();
+    }
+
+    public function getGender()
+    {
+        return Gender::all();
+    }
+
+    public function getStatus()
+    {
+        return Status::all();
+    }
+
+    public function findWithRelation($id){
+        return User::with('gender', 'status')->find($id);
     }
 }

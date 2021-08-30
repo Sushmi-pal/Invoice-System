@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Repository\User\UserRepo;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 class UserService
@@ -115,5 +116,47 @@ class UserService
         }
 
         return $this->userRepository->getUsers($select, $where, $orWhere, $orderBy, $skip, $take);
+    }
+
+    /**
+     * Edits profile page
+     *
+     * @param $id
+     * @return array
+     */
+    public function editProfile($id){
+        $gender = $this->userRepository->getGender();
+        $status = $this->userRepository->getStatus();
+        $profile = $this->userRepository->findWithRelation($id);
+        $arr=[];
+        array_push($arr, $gender, $status, $profile);
+        return $arr;
+    }
+
+    /**
+     * Updates profile page
+     *
+     * @param $data
+     * @param $id
+     */
+    public function updateProfile($data, $id){
+        $gender = $this->userRepository->all();
+        $status = $this->userRepository->getStatus();
+        $profile = $this->userRepository->findWithRelation($id);
+        if ($data->hasFile('file_image')) {
+            Storage::disk('uploads')->delete($profile->profile_pic);
+            $profile_image = $data->file('file_image');
+            $profile_pic = $profile_image->store('pp_image', 'uploads');
+            $profile->filename = $profile_pic;
+        } else {
+            $profile->filename = $profile->filename;
+        }
+        $profile->phone_number = $data->number;
+        $profile->gender_id = $data->gender;
+        $profile->status_id = $data->status;
+        $profile->save();
+        $arr=[];
+        array_push($arr, $gender, $status, $profile);
+        return $arr;
     }
 }

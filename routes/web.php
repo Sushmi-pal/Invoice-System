@@ -26,3 +26,6 @@ Route::resource('user',\App\Http\Controllers\User\UserController::class);
 Route::resource('role',\App\Http\Controllers\Role\RoleController::class);
 Route::get('/search', [\App\Http\Controllers\User\UserController::class, 'GetUser'])->name('search');
 Route::get('/audit', [\App\Http\Controllers\Audit\AuditController::class, 'showAudit'])->name('audit');
+Route::get('profile/{id}/edit', [\App\Http\Controllers\User\UserController::class, 'editProfile'])->name('editProfile');
+Route::any('profile/{id}', [\App\Http\Controllers\User\UserController::class, 'updateProfile'])->name('updateProfile');
+//Route::any('/profile_store', [\App\Http\Controllers\Profile\ProfileController::class, 'storeProfile'])->name('store_profile');
