@@ -20,17 +20,8 @@ class User extends Authenticatable implements Auditable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password','phone_number', 'filename', 'gender_id', 'status_id'
     ];
-
-//    protected $auditInclude = [
-//        'title',
-//        'content',
-//    ];
-//
-//    protected $auditExclude = [
-//        'published',
-//    ];
 
 
     /**
@@ -52,13 +43,11 @@ class User extends Authenticatable implements Auditable
         'email_verified_at' => 'datetime',
     ];
 
+    public function gender(){
+        return $this->belongsTo(Gender::class, 'gender_id', 'id');
+    }
 
-
-//    public function users_roles(){
-//        return $this->belongsTo(DB::table(models_has_roles), 'model_id', 'role_id');
-//    }
-//
-//    public function users_permissions(){
-//        return $this->hasMany(Permission::class, 'model_id', 'permission_id');
-//    }
+    public function status(){
+        return $this->belongsTo(Status::class, 'status_id', 'id');
+    }
 }

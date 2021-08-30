@@ -2,12 +2,7 @@
 @can('retrieve_user')
 @section('CssSection')
     <link href="{{ asset('css/UserLayout.css') }}" rel="stylesheet">
-<style>
-    .active{
-        font-size: 25px !important;
-        color: red !important;
-    }
-</style>
+
 @endsection
 @section('title') User @endsection
 @section('body')
@@ -32,6 +27,7 @@
         <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
     <input type="hidden" id="order" name="order">
+    <input type="hidden" id="id" name="id">
     <table class="table table-hover">
         <thead>
         <tr>

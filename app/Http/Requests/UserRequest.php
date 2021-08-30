@@ -39,6 +39,10 @@ class UserRequest extends FormRequest
                 return [
                     'name' => ['required', 'string', 'max:255'],
                     'email' => ['required', 'string', 'email', 'max:255'],
+                    'phone_number' => ['min:10|numeric'],
+                    'profile_pic' => ['mimes:png, jpg, jpeg'],
+                    'gender' => ['in:1, 2'],
+                    'status' => ['in:1, 2, 3']
                 ];
             default:break;
 

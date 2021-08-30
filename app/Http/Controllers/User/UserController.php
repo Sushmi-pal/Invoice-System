@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers\User;
 
-use App\helper\RolePermission;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\ProfileRequest;
+use App\Models\Profile;
 use App\Models\User;
+use App\Repository\User\UserRepo;
 use App\Service\UserService;
-use Illuminate\Database\DatabaseManager;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
-use PHPUnit\Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
 
@@ -26,15 +24,17 @@ class UserController extends Controller
      * @var UserService
      */
     protected $userService;
+    protected $userRepository;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, UserRepo $userRepository)
     {
         $this->userService = $userService;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -50,7 +50,7 @@ class UserController extends Controller
             return view('User.UserRetrieve')->with('result', $result)->with('total', $total)->with('status', 'Search Results');
         } catch (\Exception $exception) {
             Log::error($exception);
-            return Redirect::back()->withErrors(['error_msg', $exception]);
+            return redirect()->back()->with('error_msg', $exception);
         }
     }
 
@@ -67,7 +67,7 @@ class UserController extends Controller
             return view('User.UserForm', compact('roles'));
         } catch (\Exception $exception) {
             Log::error($exception);
-            return Redirect::back()->withErrors(['error_msg', $exception]);
+            return redirect()->back()->with('error_msg', $exception);
         }
     }
 
@@ -87,8 +87,12 @@ class UserController extends Controller
                 "email" => $req->email,
                 "password" => bcrypt($req->password)
             ]);
-
+            $profile = new Profile();
+            dd($profile);
+            $profile->user_id = $user->id;
+            $profile->save();
             $roles = $req->roles;
+
             foreach ($roles as $role) {
                 $user->assignRole($role);
             }
@@ -96,7 +100,7 @@ class UserController extends Controller
             return redirect()->route('Users')->with('status', 'New User Created');
         } catch (\Exception $exception) {
             Log::error($exception);
-            return Redirect::back()->withErrors(['error_msg', $exception]);
+            return redirect()->back()->with('error_msg', $exception);
         }
     }
 
@@ -123,7 +127,7 @@ class UserController extends Controller
             DB::commit();
         } catch (\Exception $exception) {
             Log::error($exception);
-            return Redirect::back()->withErrors(['error_msg', $exception]);
+            return redirect()->back()->with('error_msg', $exception);
         }
 
     }
@@ -146,7 +150,7 @@ class UserController extends Controller
             return redirect()->route('Users')->with('status', 'User Details Updated');
         } catch (\Exception $exception) {
             Log::error($exception);
-            return Redirect::back()->withErrors(['error_msg', $exception]);
+            return redirect()->back()->with('error_msg', $exception);
         }
 
     }
@@ -167,7 +171,46 @@ class UserController extends Controller
             return redirect()->route('Users');
         } catch (\Exception $exception) {
             Log::error($exception);
-            return Redirect::back()->withErrors(['error_msg', $exception]);
+            return redirect()->back()->with('error_msg', $exception);
+        }
+    }
+
+    public function editProfile($id)
+    {
+        try {
+            $all = $this->userService->editProfile($id);
+            $gender = $all[0];
+            $status = $all[1];
+            $profile = $all[2];
+            return view('Profile.ProfileForm', compact('profile', 'gender', 'status'));
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            return redirect()->back()->with('error_msg', $exception);
+        }
+    }
+
+    public function updateProfile(ProfileRequest $request, $id)
+    {
+        try {
+            $gender = $this->userRepository->all();
+            $status = $this->userRepository->getStatus();
+            $profile = $this->userRepository->findWithRelation($id);
+            if ($request->hasFile('file_image')) {
+                Storage::disk('uploads')->delete($profile->profile_pic);
+                $profile_image = $request->file('file_image');
+                $profile_pic = $profile_image->store('pp_image', 'uploads');
+                $profile->profile_pic = $profile_pic;
+            } else {
+                $profile->profile_pic = $profile->profile_pic;
+            }
+            $profile->phone_number = $request->number;
+            $profile->gender_id = $request->gender;
+            $profile->status_id = $request->status;
+            $profile->save();
+            return redirect()->route('editProfile', $id)->with('gender', $gender)->with('status', $status)->with('profile', $profile)->with('status', 'Updated Successfully');
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            return redirect()->back()->with('error_msg', $exception);
         }
     }
 }
