@@ -30,6 +30,18 @@
 
                     <ul>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{route('company.index')}}">COMPANY</a>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">INVOICE</a>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{route('editProfile', \Illuminate\Support\Facades\Auth::user()->id)}}">PROFILE</a>
                         </li>
                     </ul>

@@ -25,10 +25,12 @@ class CreateUsersTable extends Migration
             $table->string('profile_pic')->nullable();
             $table->unsignedBigInteger('gender_id')->nullable();
             $table->unsignedBigInteger('status_id')->nullable();
-
+            $table->unsignedBigInteger('company_id')->nullable();
             $table->foreign('gender_id')->references('id')->on('genders')
                 ->onDelete('cascade');
             $table->foreign('status_id')->references('id')->on('statuses')
+                ->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')
                 ->onDelete('cascade');
         });
     }
@@ -40,10 +42,11 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['gender_id']);
             $table->dropForeign(['status_id']);
-            $table->dropColumn(['gender_id','status_id']);
+            $table->dropForeign(['company_id']);
+            $table->dropColumn(['gender_id', 'status_id', 'company_id']);
         });
 
     }

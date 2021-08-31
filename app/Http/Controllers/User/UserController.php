@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Models\Company;
 use App\Models\Profile;
 use App\Models\User;
 use App\Repository\User\UserRepo;
@@ -64,7 +65,8 @@ class UserController extends Controller
     {
         try {
             $roles = Role::all();
-            return view('User.UserForm', compact('roles'));
+            $companies=Company::all();
+            return view('User.UserForm', compact('roles', 'companies'));
         } catch (\Exception $exception) {
             Log::error($exception);
             return redirect()->back()->with('error_msg', $exception);
@@ -80,17 +82,13 @@ class UserController extends Controller
     public function store(UserRequest $req)
     {
         try {
-
             DB::beginTransaction();
             $user = $this->userService->store([
                 "name" => $req->name,
                 "email" => $req->email,
-                "password" => bcrypt($req->password)
+                "password" => bcrypt($req->password),
+                "company_id"=>$req->company
             ]);
-            $profile = new Profile();
-            dd($profile);
-            $profile->user_id = $user->id;
-            $profile->save();
             $roles = $req->roles;
 
             foreach ($roles as $role) {

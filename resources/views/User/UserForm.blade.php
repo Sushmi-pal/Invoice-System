@@ -31,6 +31,7 @@
                         {{""}}
                         @endif> {{$role->name}} <br>
                 @endforeach
+
                 <button type="submit">Submit</button>
             </form>
         @else
@@ -50,8 +51,14 @@
                 <label id="icon" for="confirm_password"><i class="icon-shield"></i></label>
                 <input id="password-confirm" type="password" placeholder="Confirm Password" name="password_confirmation"
                        autocomplete="new-password">
-                <span id="SpanConfirmpassword" class="error">@error('confirm_password'){{$message}}@enderror</span> <br><br>
+                <span id="SpanConfirmpassword" class="error">@error('confirm_password'){{$message}}@enderror</span> <br>
+                <label for="company">Company:</label>
 
+                <select name="company" id="company">
+                @foreach($companies as $company)
+                    <option value="{{$company->id}}">{{$company->name}}</option>
+                @endforeach
+                </select><br>
                 @foreach ($roles as $role)
                     <input type="checkbox" name="roles[]" value="{{$role->name}}"> {{$role->name}} <br>
                 @endforeach
