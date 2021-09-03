@@ -12,16 +12,12 @@ use Illuminate\Support\Facades\Log;
  */
 class AuditController extends Controller
 {
-    /**
-     * @var AuditService
-     */
-    protected $auditService;
 
     /**
      * @param AuditService $auditService
      */
-    public function __construct(AuditService $auditService){
-        $this->auditService=$auditService;
+    public function __construct(protected AuditService $auditService){
+
     }
 
     /**
