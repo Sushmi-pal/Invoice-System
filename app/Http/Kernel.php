@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\InvoiceMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -53,6 +54,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'invoice'=>InvoiceMiddleware::class,
         'user_login' => \App\Http\Middleware\UserLoginMiddleware::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'auth' => \App\Http\Middleware\Authenticate::class,

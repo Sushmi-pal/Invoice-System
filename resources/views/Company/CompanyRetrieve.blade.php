@@ -1,8 +1,7 @@
 @extends('layouts.app')
-@can('retrieve_user')
+@can('access_company')
 @section('CssSection')
     <link href="{{ asset('css/UserLayout.css') }}" rel="stylesheet">
-
 @endsection
 @section('title') Company @endsection
 @section('body')

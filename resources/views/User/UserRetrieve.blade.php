@@ -1,5 +1,8 @@
 @extends('layouts.app')
-@can('retrieve_user')
+@if (session('status'))
+    <div class="alert alert-success">{{session('status')}}</div>
+@endif
+@can('access_user')
 @section('CssSection')
     <link href="{{ asset('css/UserLayout.css') }}" rel="stylesheet">
 

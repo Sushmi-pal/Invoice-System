@@ -47,6 +47,7 @@ class CreateUsersTable extends Migration
             $table->dropForeign(['status_id']);
             $table->dropForeign(['company_id']);
             $table->dropColumn(['gender_id', 'status_id', 'company_id']);
+            $table->dropIfExists();
         });
 
     }

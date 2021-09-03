@@ -10,6 +10,7 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
             @if (Auth::user())
+                @if(auth()->user()->hasRole('admin'))
                 <ul>
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('Users')}}">USERS</a>
@@ -33,10 +34,10 @@
                             <a class="nav-link" href="{{route('company.index')}}">COMPANY</a>
                         </li>
                     </ul>
-
+                    @endif
                     <ul>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">INVOICE</a>
+                            <a class="nav-link" href="{{route('invoice.index')}}">INVOICE</a>
                         </li>
                     </ul>
 
