@@ -18,18 +18,10 @@ use Illuminate\Support\Facades\Storage;
 class CompanyController extends Controller
 {
     /**
-     * @var CompanyService
-     */
-    protected $companyService;
-    protected $fileService;
-
-    /**
      * @param CompanyService $companyService
      */
-    public function __construct(CompanyService $companyService, FileService $fileService)
+    public function __construct(protected CompanyService $companyService, protected FileService $fileService)
     {
-        $this->companyService = $companyService;
-        $this->fileService = $fileService;
     }
 
 

@@ -21,24 +21,13 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-
-    /**
-     * @var UserService
-     */
-    protected $userService;
-    protected $userRepository;
-    protected $fileService;
-
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(UserService $userService, UserRepo $userRepository, FileService $fileService)
+    public function __construct(protected UserService $userService, protected UserRepo $userRepository, protected FileService $fileService)
     {
-        $this->userService = $userService;
-        $this->userRepository = $userRepository;
-        $this->fileService = $fileService;
     }
 
     /**

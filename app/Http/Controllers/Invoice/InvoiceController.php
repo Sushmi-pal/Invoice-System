@@ -12,17 +12,13 @@ use Illuminate\Support\Facades\Log;
  */
 class InvoiceController extends Controller
 {
-    /**
-     * @var InvoiceService
-     */
-    protected $invoiceService;
+
 
     /**
      * @param InvoiceService $invoiceService
      */
-    public function __construct(InvoiceService $invoiceService)
+    public function __construct(protected InvoiceService $invoiceService)
     {
-        $this->invoiceService = $invoiceService;
     }
 
 

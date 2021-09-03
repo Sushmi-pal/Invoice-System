@@ -17,16 +17,10 @@ use Spatie\Permission\Models\Role;
 class RoleController extends Controller
 {
     /**
-     * @var RoleService
-     */
-    protected $roleService;
-
-    /**
      * @param RoleService $roleService
      */
-    public function __construct(RoleService $roleService)
+    public function __construct(protected RoleService $roleService)
     {
-        $this->roleService = $roleService;
     }
 
 
