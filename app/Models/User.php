@@ -50,4 +50,8 @@ class User extends Authenticatable implements Auditable
     public function status(){
         return $this->belongsTo(Status::class, 'status_id', 'id');
     }
+
+    public function company(){
+        return $this->hasOne(Company::class, 'company_id', 'id');
+    }
 }

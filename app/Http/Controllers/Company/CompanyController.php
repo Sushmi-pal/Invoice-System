@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use App\Service\CompanyService;
+use App\Service\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -20,28 +21,17 @@ class CompanyController extends Controller
      * @var CompanyService
      */
     protected $companyService;
+    protected $fileService;
 
     /**
      * @param CompanyService $companyService
      */
-    public function __construct(CompanyService $companyService)
+    public function __construct(CompanyService $companyService, FileService $fileService)
     {
         $this->companyService = $companyService;
+        $this->fileService = $fileService;
     }
 
-    /**
-     * Reusable method for file storage
-     *
-     * @param $company
-     * @param $request
-     */
-    private function storeFile($company, $request)
-    {
-        $company_image = $request->file('logo');
-        $company_pic = $company_image->store('company_image', 'uploads');
-        $company->company_image = $company_pic;
-        $company->save();
-    }
 
     /**
      *Display a listing of the companies.
@@ -93,7 +83,7 @@ class CompanyController extends Controller
                 "location" => $request->address,
                 "number" => $request->phone
             ]);
-            $this->storeFile($company, $request);
+            $this->fileService->storeFile($company, $request, 'logo', 'company_image', 'company_image');
             DB::commit();
             return redirect()->route('company.index')->with('status', 'New Company Created');
         } catch (\Exception $exception) {
@@ -150,7 +140,7 @@ class CompanyController extends Controller
             $company_update = $this->companyService->find($company->id);
             if ($request->hasFile('logo')) {
                 Storage::disk('uploads')->delete($company->company_image);
-                $this->storeFile($company_update, $request);
+                $this->fileService->storeFile($company_update, $request, 'logo', 'company_image', 'company_image');
             }
             $this->companyService->update($company->id, [
                 "name" => $request->company_name,

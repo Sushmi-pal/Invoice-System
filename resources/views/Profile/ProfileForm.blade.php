@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('CssSection')
+    <link href="{{ asset('css/UserLayout.css') }}" rel="stylesheet">
+@endsection
 @section('body')
     @if ($errors->any())
         <div class="alert alert-danger">

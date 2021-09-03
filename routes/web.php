@@ -21,11 +21,13 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
-Route::get('/Users', [App\Http\Controllers\User\UserController::class, 'getUsers'])->name('Users');
+Route::get('/Users', [App\Http\Controllers\User\UserController::class, 'getUsers'])->name('Users')->middleware('admin');
 Route::resource('user',\App\Http\Controllers\User\UserController::class);
-Route::resource('role',\App\Http\Controllers\Role\RoleController::class);
+Route::resource('role',\App\Http\Controllers\Role\RoleController::class)->middleware('admin');
 Route::get('/search', [\App\Http\Controllers\User\UserController::class, 'GetUser'])->name('search');
-Route::get('/audit', [\App\Http\Controllers\Audit\AuditController::class, 'showAudit'])->name('audit');
+Route::get('/audit', [\App\Http\Controllers\Audit\AuditController::class, 'showAudit'])->name('audit')->middleware('admin');
 Route::get('profile/{id}/edit', [\App\Http\Controllers\User\UserController::class, 'editProfile'])->name('editProfile');
 Route::any('profile/{id}', [\App\Http\Controllers\User\UserController::class, 'updateProfile'])->name('updateProfile');
-Route::resource('company', \App\Http\Controllers\Company\CompanyController::class);
+Route::resource('company', \App\Http\Controllers\Company\CompanyController::class)->middleware('admin');
+Route::resource('item', \App\Http\Controllers\Item\ItemController::class);
+Route::resource('invoice', \App\Http\Controllers\Invoice\InvoiceController::class);

@@ -9,6 +9,7 @@ use App\Models\Company;
 use App\Models\Profile;
 use App\Models\User;
 use App\Repository\User\UserRepo;
+use App\Service\FileService;
 use App\Service\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -26,16 +27,18 @@ class UserController extends Controller
      */
     protected $userService;
     protected $userRepository;
+    protected $fileService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(UserService $userService, UserRepo $userRepository)
+    public function __construct(UserService $userService, UserRepo $userRepository, FileService $fileService)
     {
         $this->userService = $userService;
         $this->userRepository = $userRepository;
+        $this->fileService = $fileService;
     }
 
     /**
@@ -65,7 +68,7 @@ class UserController extends Controller
     {
         try {
             $roles = Role::all();
-            $companies=Company::all();
+            $companies = Company::all();
             return view('User.UserForm', compact('roles', 'companies'));
         } catch (\Exception $exception) {
             Log::error($exception);
@@ -87,7 +90,7 @@ class UserController extends Controller
                 "name" => $req->name,
                 "email" => $req->email,
                 "password" => bcrypt($req->password),
-                "company_id"=>$req->company
+                "company_id" => $req->company
             ]);
             $roles = $req->roles;
 
@@ -195,9 +198,7 @@ class UserController extends Controller
             $profile = $this->userRepository->findWithRelation($id);
             if ($request->hasFile('file_image')) {
                 Storage::disk('uploads')->delete($profile->profile_pic);
-                $profile_image = $request->file('file_image');
-                $profile_pic = $profile_image->store('pp_image', 'uploads');
-                $profile->profile_pic = $profile_pic;
+                $this->fileService->storeFile($profile, $request, 'file_image', 'pp_image', 'profile_pic');
             } else {
                 $profile->profile_pic = $profile->profile_pic;
             }
