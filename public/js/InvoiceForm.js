@@ -14,7 +14,6 @@ document.getElementById('add-new-item').onclick = function () {
     Increment++;
 }
 
-
 function clickItem() {
     let tries = document.getElementById('myUL')
     tries.innerHTML = ''
@@ -46,20 +45,23 @@ function getItem(t) {
 }
 
 function itemValue() {
+    console.log(document.getElementById('cost').value)
+    console.log(document.getElementById('quantity').value)
     document.getElementById('myUL').innerHTML = ""
     let value = $('form').serialize()
     let ItemList = value.split("&")
     ItemList.shift()
     ItemList.splice(-6, 6)
     ItemList.shift()
-    ItemList.shift()
     let AllItems = []
     ItemList.forEach(function (data) {
         AllItems.push(data.split("=")[1])
     })
+    console.log(ItemList)
     if (AllItems.length % 3 !== 0) {
         AllItems.shift()
     }
+
     let totalamount = 0
     for (let index = 0; index < AllItems.length; index = index + 3) {
         totalamount += AllItems[index + 1] * AllItems[index + 2]
