@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Invoice;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InvoiceRequest;
+use App\Mail\TestMail;
 use App\Service\InvoiceService;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class Invoice Controller
@@ -64,6 +66,11 @@ class InvoiceController extends Controller
     {
         try {
             $this->invoiceService->store($request);
+            $details=[
+                'title'=>'title',
+                'body'=>'body'
+            ];
+            Mail::to("sushmipalikhe97@gmail.com")->send(new TestMail($details));
             return redirect()->route('invoice.index')->with('status', 'Invoice Created Successfully');
         } catch (\Exception $exception) {
             Log::error($exception);
@@ -102,7 +109,7 @@ class InvoiceController extends Controller
     public function edit($id)
     {
         try {
-            if (auth()->user()->hasPermissionTo('update_invoice')){
+            if (auth()->user()->hasPermissionTo('update_invoice')) {
                 $result = $this->invoiceService->edit($id);
                 $arr = $result[0];
                 $invoice = $result[1];
@@ -143,12 +150,10 @@ class InvoiceController extends Controller
     public function destroy($id)
     {
         try {
-            if (auth()->user()->hasPermissionTo('delete_invoice')){
+            if (auth()->user()->hasPermissionTo('delete_invoice')) {
                 $this->invoiceService->delete($id);
                 return redirect()->route('invoice.index')->with('status', 'Invoice Deleted Successfully');
             }
-
-
         } catch (\Exception $exception) {
             Log::error($exception);
             return redirect()->back()->with('error_msg', $exception);
