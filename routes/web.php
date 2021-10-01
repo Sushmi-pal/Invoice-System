@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    \App\Models\User::find(201)->notify(new \App\Notifications\Notify);
     return redirect('/login');
 });
 
