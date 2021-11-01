@@ -44,15 +44,18 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function gender(){
+    public function gender()
+    {
         return $this->belongsTo(Gender::class, 'gender_id', 'id');
     }
 
-    public function status(){
+    public function status()
+    {
         return $this->belongsTo(Status::class, 'status_id', 'id');
     }
 
-    public function company(){
+    public function company()
+    {
         return $this->hasOne(Company::class, 'company_id', 'id');
     }
 }
