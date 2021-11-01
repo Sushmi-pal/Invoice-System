@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class User extends Authenticatable implements Auditable
+class User extends Authenticatable implements Auditable, MustVerifyEmail
 {
     use HasFactory, Notifiable, HasRoles, \OwenIt\Auditing\Auditable;
 
@@ -43,15 +44,18 @@ class User extends Authenticatable implements Auditable
         'email_verified_at' => 'datetime',
     ];
 
-    public function gender(){
+    public function gender()
+    {
         return $this->belongsTo(Gender::class, 'gender_id', 'id');
     }
 
-    public function status(){
+    public function status()
+    {
         return $this->belongsTo(Status::class, 'status_id', 'id');
     }
 
-    public function company(){
+    public function company()
+    {
         return $this->hasOne(Company::class, 'company_id', 'id');
     }
 }
